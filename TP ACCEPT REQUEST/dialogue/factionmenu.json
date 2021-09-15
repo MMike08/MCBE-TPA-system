@@ -1,0 +1,30 @@
+{
+    "format_version": "1.17",
+    "minecraft:npc_dialogue": {
+      "scenes": [
+        {
+          "scene_tag": "faction_claimmenu",
+          "npc_name": "Faction Manager",
+          "text": "§bFactions Claiming Menu§r\nThis is the factions claiming menu. Select which plot you want to create.",
+          "buttons": [
+            {
+              "name": "Create Plot",
+              "commands": [
+                "/tag @s add createPlot"
+              ]
+            },
+            {
+              "name": "Remove Plot",
+              "commands": [
+                "/tag @s add removePlot"
+              ]
+            }
+          ],
+          "on_open_commands": [
+            "tag @initiator remove openFactionMenu"
+        ]
+        }
+      ]
+    }
+  }
+  
