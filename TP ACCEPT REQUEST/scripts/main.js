@@ -17,8 +17,9 @@ World.events.beforeChat.subscribe(msg => {
 
         //stole this from my discord bot code
         let args_ = msg.message.slice(commandPrefix.length).trim().split(' '); //get arguments
+        let args__ = args_.joing('');
         let command = args_.shift().toLowerCase(); //gets base command
-        var args = args_.join('').toLowerCase();
+        var args = args_.join('').toLowerCase().replace(/[ ]/, '#').join('');
 
         //switch statements are faster than if else blocks. This is for performance
         switch (command) {
@@ -27,18 +28,18 @@ World.events.beforeChat.subscribe(msg => {
             case 'tprequest':
                 let playerList = Commands.run(`list`).statusMessage.toLowerCase();
 
-                if (playerList.search(args) != -1 && args != msg.sender.name && requestList.get(msg.sender.name.toLowerCase()) == null) {
+                if (playerList.search(args___) != -1 && args___ != msg.sender.name && requestList.get(msg.sender.name.toLowerCase()) == null) {
                     //var estimatablePlayer = tryEstimatePlayer(args);
                     requestList.set(msg.sender.name.toLowerCase(), args);
-                    Commands.run(`tellraw ${msg.sender.name} { "rawtext": [ { "text": "§bYou are sending the teleport request to ${args}!" } ] }`);
+                    Commands.run(`tellraw ${msg.sender.name} { "rawtext": [ { "text": "§bYou are sending the teleport request to ${args__}!" } ] }`);
                     Commands.run(`tellraw ${msg.sender.name} { "rawtext": [ { "text": "§bDo §e${commandPrefix}cancelrequest §bto cancel the teleport request!" } ] }`);
 
                     //messages to the reciever
-                    Commands.run(`tellraw ${args} { "rawtext": [ { "text": "§bYou have recieved a teleport request from ${msg.sender.name}!" } ] }`);
-                    Commands.run(`tellraw ${args} { "rawtext": [ { "text": "§bDo §e${commandPrefix}tpaccept §bto accept the request or §e${commandPrefix}tpreject §bto reject the request." } ] }`);
+                    Commands.run(`tellraw ${args__} { "rawtext": [ { "text": "§bYou have recieved a teleport request from ${msg.sender.name}!" } ] }`);
+                    Commands.run(`tellraw ${args__} { "rawtext": [ { "text": "§bDo §e${commandPrefix}tpaccept §bto accept the request or §e${commandPrefix}tpreject §bto reject the request." } ] }`);
                 }
                 //throws errors
-                else if (playerList.search(args) == -1) Commands.run(`tellraw ${msg.sender.name} { "rawtext": [ { "text": "§4That player does not exist!" } ] }`);
+                else if (playerList.search(args___) == -1) Commands.run(`tellraw ${msg.sender.name} { "rawtext": [ { "text": "§4That player does not exist!" } ] }`);
                 else if (args == msg.sender.name.toLowerCase()) Commands.run(`tellraw ${msg.sender.name} { "rawtext": [ { "text": "§4Cannot send request to self!" } ] }`);
                 else if (requestList.get(msg.sender.name.toLowerCase()) != null) Commands.run(`tellraw ${msg.sender.name} { "rawtext": [ { "text": "§4You already have an outgoing request!" } ] }`);
                 else Commands.run(`tellraw ${msg.sender.name} { "rawtext": [ { "text": "§4Error!" } ] }`);
@@ -71,7 +72,7 @@ World.events.beforeChat.subscribe(msg => {
                 }
                 else Commands.run(`tellraw ${msg.sender.name} { "rawtext": [ { "text": "§4Invalid!" } ] }`);
                 */
-               tryCatchableThing(msg, args);
+               tryCatchableThing(msg, args, args__);
             break;
 
             case 'tpar':
@@ -79,8 +80,8 @@ World.events.beforeChat.subscribe(msg => {
                 var sentTest_ = requestList.get(args);
 
                 if (msg.sender.name.toLowerCase() == sentTest_) {
-                    Commands.run(`tellraw ${args} { "rawtext": [ { "text": "§bTeleport request to ${msg.sender.name} was rejected." } ] }`);
-                    Commands.run(`tellraw ${msg.sender.name} { "rawtext": [ { "text": "§bRejected teleport from ${args}." } ] }`);
+                    Commands.run(`tellraw ${args__} { "rawtext": [ { "text": "§bTeleport request to ${msg.sender.name} was rejected." } ] }`);
+                    Commands.run(`tellraw ${msg.sender.name} { "rawtext": [ { "text": "§bRejected teleport from ${args__}." } ] }`);
                     requestList.delete(args);
                 }
                 else Commands.run(`tellraw ${msg.sender.name} { "rawtext": [ { "text": "§4Invalid!" } ] }`);
@@ -95,14 +96,14 @@ function getByValue(map, searchValue) {
     }
 }
 
-function tryCatchableThing (msg, args) {
+function tryCatchableThing (msg, args, args___) {
     try {
         var sentTest = requestList.get(args);
 
         if (msg.sender.name.toLowerCase() == sentTest) {
             //Commands.run(`tp @a[name="${args}"] @a[name="${msg.sender.name}"]`);
-            Commands.run(`execute "${args}" ~ ~ ~ tp @s ${msg.sender.name}`);
-            Commands.run(`tellraw ${args} { "rawtext": [ { "text": "§bYou have been teleported to ${msg.sender.name}!" } ] }`);
+            Commands.run(`execute "${args___}" ~ ~ ~ tp @s ${msg.sender.name}`);
+            Commands.run(`tellraw ${args___} { "rawtext": [ { "text": "§bYou have been teleported to ${msg.sender.name}!" } ] }`);
             Commands.run(`tellraw ${msg.sender.name} { "rawtext": [ { "text": "§b${args} has been teleported to you!" } ] }`);                
             requestList.delete(args);
         }
