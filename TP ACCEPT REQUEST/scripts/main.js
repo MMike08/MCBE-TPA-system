@@ -17,7 +17,7 @@ World.events.beforeChat.subscribe(msg => {
 
         //stole this from my discord bot code
         let args_ = msg.message.slice(commandPrefix.length).trim().split(' '); //get arguments
-        let args__ = args_.joing('');
+        let args__ = args_.join('');
         let command = args_.shift().toLowerCase(); //gets base command
         var args = args_.join('').toLowerCase().replace(/[ ]/, '#').join('');
 
