@@ -5,7 +5,7 @@ import {Commands, World} from 'Minecraft';
 
 
 //prefix
-var commandPrefix = '=';
+var commandPrefix = '!';
 let requestList = new Map();
 
 
@@ -14,12 +14,13 @@ World.events.beforeChat.subscribe(msg => {
     
     if (msg.message.substr(0, commandPrefix.length) == commandPrefix) {
         msg.canceled = true;
-
+        
         //stole this from my discord bot code
         let args_ = msg.message.slice(commandPrefix.length).trim().split(' '); //get arguments
         let args__ = args_.join('');
         let command = args_.shift().toLowerCase(); //gets base command
-        var args = args_.join('').toLowerCase().replace(/[ ]/, '#').join('');
+        var args = args_.join('').toLowerCase().replace(/[ ]/, '_');
+        //args.join('');
 
         //switch statements are faster than if else blocks. This is for performance
         switch (command) {
@@ -86,6 +87,10 @@ World.events.beforeChat.subscribe(msg => {
                 }
                 else Commands.run(`tellraw ${msg.sender.name} { "rawtext": [ { "text": "§4Invalid!" } ] }`);
             break;
+
+            default:
+                Commands.run(`tellraw ${msg.sender.name} { "rawtext": [ { "text": "§4Invalid!" } ] }`);
+            break;
         }
     }
 })
@@ -111,6 +116,20 @@ function tryCatchableThing (msg, args, args___) {
     }
     catch (e) {
         Commands.run(`say ${e}`);
+    }
+}
+
+function testtest1(msg) {
+    try {
+        let args_ = msg.message.slice(commandPrefix.length).trim().split(' '); //get arguments
+        let args__ = args_.join('');
+        let command = args_.shift().toLowerCase(); //gets base command
+        let args = args_.join('').toLowerCase().replace(/[ ]/, '_');
+
+        Commands.run(`say ${args_} ${command} ${args} ${args__}`);
+    }
+    catch (e) {
+        Commands.run(`say ${e}; ${e.stack}`);
     }
 }
 
