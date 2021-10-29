@@ -125,7 +125,7 @@ function tryCatchableThing (msg, args, args___) {
         else Commands.run(`tellraw ${msg.sender.name} { "rawtext": [ { "text": "§4Invalid!" } ] }`, World.getDimension("overworld"));
     }
     catch (e) {
-        Commands.run(`say ${e}`);
+        //Commands.run(`say ${e}`);
     }
 }
 
